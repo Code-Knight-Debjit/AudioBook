@@ -32,7 +32,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ audiobooks, onAddBook }
  console.error('Error fetching profiles:', error); // Log the actual error object
         setManageAdminError(`Failed to fetch users: ${error.message}`);
     } else {
-        setProfiles(data || []);
+      console.log("Data received from get_all_profiles:", data); // <--- ADD THIS LINE  
+      setProfiles(data || []);
     }
     setManageAdminLoading(false);
   }, []);
