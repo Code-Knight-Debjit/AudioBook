@@ -18,9 +18,10 @@ export interface Profile {
 export interface AdminProfileView {
   id: string;
   username: string;
-  email: string;
+
   is_admin: boolean;
   is_subscribed: boolean;
+  avatar_url: string | null;
 }
 
 export type View = 'user' | 'login' | 'signup' | 'admin';

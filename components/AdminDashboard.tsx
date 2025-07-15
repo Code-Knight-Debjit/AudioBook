@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Audiobook, AdminProfileView } from '../types';
 import { PlusIcon } from './icons/PlusIcon';
 import { supabase } from '../lib/supabaseClient';
@@ -29,6 +29,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ audiobooks, onAddBook }
     setManageAdminLoading(true);
     const { data, error } = await supabase.rpc('get_all_profiles', {});
     if (error) {
+ console.error('Error fetching profiles:', error); // Log the actual error object
         setManageAdminError(`Failed to fetch users: ${error.message}`);
     } else {
         setProfiles(data || []);
@@ -121,7 +122,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ audiobooks, onAddBook }
                         <tbody className="bg-gray-800 divide-y divide-gray-700">
                             {profiles.map(profile => (
                                 <tr key={profile.id}>
-                                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-white">{profile.username}</td>
                                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-400">{profile.email}</td>
                                     <td className="px-4 py-3 whitespace-nowrap text-sm space-x-2">
                                         {profile.is_admin && <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-red-100">Admin</span>}
