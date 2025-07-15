@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { BookOpenIcon } from './icons/BookOpenIcon';
 import { View } from '../types';
+import { GoogleIcon } from './icons/GoogleIcon';
 
 interface LoginPageProps {
   setView: React.Dispatch<React.SetStateAction<View>>;
@@ -12,6 +13,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setView }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +31,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ setView }) => {
       setView('user'); // On successful login, App.tsx will re-render and show user view.
     }
     setLoading(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setGoogleLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error) setError(error.message);
+    setGoogleLoading(false);
   };
 
   return (
@@ -81,6 +91,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ setView }) => {
             </button>
           </div>
         </form>
+        <div className="flex items-center my-6">
+          <div className="flex-grow border-t border-gray-700"></div>
+          <span className="mx-4 text-gray-400 text-sm">or</span>
+          <div className="flex-grow border-t border-gray-700"></div>
+        </div>
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          disabled={googleLoading}
+          className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-700 bg-gray-900 hover:bg-gray-800 text-white rounded-md font-medium shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <GoogleIcon className="w-6 h-6" />
+          {googleLoading ? 'Signing in with Google...' : 'Sign in with Google'}
+        </button>
       </div>
     </div>
   );
