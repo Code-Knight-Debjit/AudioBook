@@ -1,0 +1,5 @@
+{
+  "name": "Aura Audiobooks",
+  "description": "An elegant audiobook platform where users can subscribe to access a library of audio content. Admins can manage the audiobook collection.",
+  "requestFramePermissions": []
+}
